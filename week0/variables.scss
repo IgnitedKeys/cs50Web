@@ -1,0 +1,33 @@
+$color: red;
+
+ul {
+    font-size: 14px;
+    color: $color;
+}
+
+ol {
+    font-size: 18px;
+    color: $color;
+}
+
+/*compile code with sass: sass <filename.scss>:<newfilename>.css */
+/*to autocompile: sass --watch <filename.scss>:<newfilename.css> */
+
+/*sass allows nesting selectors */
+/*inheritance:
+
+%message {
+    font-family: ...;
+    font-size: ...;
+    margin: ...;
+}
+
+.success {
+   @extends %message;
+    background-color: green;
+}  
+.error {
+    @extends $message;
+    background-color: red;
+}      
+*/

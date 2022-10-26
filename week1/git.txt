@@ -1,0 +1,62 @@
+GIT and COMMANDLINE
+
+cd <fileName> -change directory
+ls -list of files/folders
+touch <fileName> -create file  
+
+
+git clone <url>
+--take git repo and download on computer 
+--can use to create new git too
+
+git add <fileName>
+--tracks file(s)
+
+git commit -m "message"
+--create a save of the file
+
+git status
+--shows info on commit
+--the branch, commits, added files, non-staged 
+
+git push 
+--push commits to gitHub
+
+git commit -am "message"
+--shorthand for adding all files and commiting
+
+git pull
+--get lastest version on gitHub
+
+git log
+--describes commits
+
+git reset
+-- git reset --hard <commit>
+-- git reset --hard origin/master
+
+Merge Conflicts:
+ <<<<< head
+ your changes
+ =======
+ remote changes
+ >>>>>>> conflicting commit hash
+
+Branching:
+git branch
+--shows current branch and branches that exists
+
+git checkout <branchName>
+--switch branches
+
+git checkout -b <newBranchName>
+--switch and create new branch
+
+git merge <branchToMergeWithName>
+
+Forking:
+Get a copy of the code that you can make changes to.
+If later you want to contribute to origin, make a pull request
+
+--github page
+<gitHubUserName>.github.io

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!-- internal style -->
+        <!-- <style>
+            h1 {
+                color: red;
+                text-align: center;
+            }
+        </style> -->
+        <style>
+            #foo {
+                color: pink;
+            }
+            .baz {
+                color: thistle;
+            }
+        </style>
+        <title>style</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body style="color: blue; text-align:right; background-color: wheat;"> <!-- parent and child DOM -->
+        <h1>Welcome to my home page</h1> 
+        <h1>This is my second header</h1>
+
+        <h2 id="foo">Heading 1</h2>
+        <h2 class="baz">Heading 2</h2>
+        <h2 class="baz">Heading 3</h2>
+
+        <p style="color: green;">hello, world</p> <!-- inline style -->
+    </body>
+</html>
+
+<!-- STYLE HIERARCHY
+ 1. inline
+ 2. id
+ 3. class
+ 4. type
+-->
+<!-- CSS SELECTORS
+a, b -- Mutliple element selector
+a b -- descendant selector
+a > b -- child selector
+a + b -- adjacent sibling selector
+[a=b] -- attribute selector
+a:b -- pseudoclass selector
+a::b -- pseudoelement selector
+-->
