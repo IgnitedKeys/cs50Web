@@ -1,0 +1,8 @@
+//Create new django prject:
+django-admin startproject PROJECT_NAME 
+
+//Run server
+python3 manage.py runserver
+
+//Create new App
+python3 manage.py startapp APP_NAME
