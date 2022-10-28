@@ -1,0 +1,10 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Add Comments</h2>
+    <form method="POST" action="{% url 'add_comment' listing_id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Post">   
+    </form>
+{% endblock %}

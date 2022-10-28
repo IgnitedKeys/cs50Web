@@ -1,0 +1,78 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<h2> {{ listing.title }} </h2>
+<div class="listing-col">
+   
+    <div class="listing-item">
+        {% if list.image.url %}
+        <img style = "max-width: 300px; max-height: 350px;" src="{{ listing.image.url }}">
+        {% else %}
+        <img style="max-width: 300px; max-height: 350px;" src="/media/images/No_image_available.jpg">
+        {% endif %}
+    </div>
+    <div class="listing-item">
+        {% if list.description%}
+        <p>{{ listing.description }}</p>
+        {% else %}
+        <p>no description</p>
+        {% endif %}
+        <p>category: {{listing.category}}</p>
+        <p>listed by: {{listing.lister}}</p>
+    </div>
+   
+</div>
+{% if user.is_authenticated %}
+<div class="center">
+    <h3>Add to Watchlist</h3>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" name="button" value="watchlist">Watchlist</button>
+</form>
+</div>
+{% if listing.closed %}
+    {% if listing.bids.user.username %}
+    <li>Winner: {{listing.bids.user.username }}</li>
+    {% else %}
+    <li>Winner: no bids made!</li>
+    {% endif%}
+{% endif %}
+<div class="center">
+{% if user.username == listing.lister.username and not listing.closed %}
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" name="button" value="close">Close</button>
+</form>
+{% endif %}
+</div>
+<div class="listing-col">
+    <div class="listing-item">
+        <p> ${{ listing.price }}</p>
+        <form method="post">
+            {% csrf_token %}
+            <div> {{ form }} <input type="submit" value="Bid"> </div>   
+        </form>
+        {% if message %}
+            {{ message }}
+        {% endif %}
+
+
+
+            
+        </div>
+    <div class="listing-item">
+        <h3> Comments</h3>
+        <a href="{% url 'add_comment' listing.id %}">Add Comments</a>
+        
+        {% for comment in listing.comments.all %}
+            <p>{{ comment.comment }}</p>
+        {% endfor %}
+    </div> 
+</div>   
+
+<!--
+<p> don't forget closing auction displays</p>
+-->
+{% endif %}
+{% endblock %}

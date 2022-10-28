@@ -1,0 +1,11 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<div class="category-flex">
+{% for category in categories %}
+<p class="category-item"><a href="categories/{{category.0}}">{{ category.1 }}</a></p>
+
+{% endfor %}
+</div>
+{% endblock%}

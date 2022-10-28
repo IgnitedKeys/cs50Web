@@ -1,0 +1,26 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <h2>Create a Listing</h2>
+    <div class="create">
+        <div>
+        {{ form.as_p}} 
+       
+       
+        </div>
+        <input type="submit" value="Save">
+    </div>
+    
+
+   
+</form>
+{% if form.img_obj %}
+<img src="{{ img_obj.image.url }}" alt="connect" style="max-height: 300px;">
+{% endif %}
+
+
+
+{% endblock %}

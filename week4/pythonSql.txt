@@ -1,0 +1,19 @@
+python3 manage.py makemigrations
+python3 manage.py migrate
+//both needed to create changes to database
+
+f = Flight(origin="New York", destination="London", duration = 415)
+f.save()
+flights = Flight.objects.all()
+flight = flights.first()
+flight.id
+flight.delete()
+
+Flight.objects.filter(origin="New York")
+python3 manage.py shell
+
+USE ADMIN:
+
+python3 manage.py createsuperuser
+//add to admin.py to use models
++admin.site.register(Airport)
