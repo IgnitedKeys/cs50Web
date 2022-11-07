@@ -1,0 +1,28 @@
+{% extends "network/layout.html" %}
+
+{% block body %}
+    <div id="posts">
+        {% for post in posts%}
+            <a href="{% url 'profile' username=post.user %}">{{ post.user }}</a>
+            {{ post.timestamp }}
+            {{ post.content }}
+            {% empty %}
+            no posts yet
+        {% endfor %}
+    </div>
+
+    {% if user.is_authenticated %}
+    <div id="newPost" class="row justify-content-center">
+        <div class="form-group col-6">
+            <form action="{% url 'newPost' user_id=user.id %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <textarea rows="3" class="form-control col-10" name="textarea"></textarea>
+                    <input class="btn btn-primary col-2" type="submit" value="Post">    
+                </div>
+                
+            </form>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}

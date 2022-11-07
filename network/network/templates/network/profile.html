@@ -1,0 +1,25 @@
+{% extends "network/layout.html" %}
+{% load static %}
+
+{% block body %}
+PROFILE 
+{{ user_data }}
+{% for post in posts%}
+    {{ post }}
+{% endfor %}
+
+{% if user_data.username != user.username %}
+    {% if not followingUser %}
+    <form method="post" action="{% url 'profile' username=user_data.username %}">
+        {% csrf_token %}
+        <button type="submit">Follow</button>
+    </form>
+    {% elif followingUser %}
+        <form method="post" action="{% url 'profile' username=user_data.username %}">
+            {% csrf_token %}
+            <button type="submit">Unfollow</button>
+        </form>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

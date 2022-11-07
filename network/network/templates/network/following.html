@@ -1,0 +1,12 @@
+{% extends 'network/layout.html' %}
+
+{% block body %}
+
+    {% if message %}
+        {{ message }}
+    {% endif %}
+
+    {% for post in posts%}
+        {{ post }}
+    {% endfor %}
+{% endblock %}
