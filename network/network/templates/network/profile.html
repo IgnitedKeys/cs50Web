@@ -1,25 +1,47 @@
 {% extends "network/layout.html" %}
-{% load static %}
+
+{% block title %}
+    {{ user_data.username}}
+{% endblock %}
 
 {% block body %}
-PROFILE 
-{{ user_data }}
-{% for post in posts%}
-    {{ post }}
-{% endfor %}
-
-{% if user_data.username != user.username %}
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">{{ user_data.username }}</h1>
+        <p class="lead">Following: {{ totalFollowing }}</p>
+        <p class="lead">Followers: {{ totalFollowers }}</p>
+    
+    {% if user_data.username != user.username %}
     {% if not followingUser %}
+    <p class="lead">
     <form method="post" action="{% url 'profile' username=user_data.username %}">
         {% csrf_token %}
-        <button type="submit">Follow</button>
-    </form>
+        <button role ="button" class='btn btn-primary' type="submit">Follow</button>
+    </form></p>
     {% elif followingUser %}
-        <form method="post" action="{% url 'profile' username=user_data.username %}">
-            {% csrf_token %}
-            <button type="submit">Unfollow</button>
-        </form>
+    <p class="lead">
+    <form method="post" action="{% url 'profile' username=user_data.username %}">
+        {% csrf_token %}
+        <button class="btn btn-secondary" type="submit">Unfollow</button>
+    </form></p>
     {% endif %}
-{% endif %}
+    {% endif %}
+    </div>
+</div>
+
+    
+    
+
+{% for post in posts%}
+<div class="container">
+    <div class="card" style="width:50%">
+        <div class="card-body">
+            <h5 class="card-title">{{ post.user }}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">{{ post.timestamp }}</h6>
+            <div class="card-text">{{ post.content }}</div>
+        </div>
+    </div>
+</div>
+{% endfor %}
 
 {% endblock %}

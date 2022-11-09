@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 
 
-from .models import User, Profile, Post
+from .models import User, Profile, Post, Like
 
 
 def index(request):
@@ -77,11 +77,12 @@ def save_post(request):
         
         post = Post.objects.create(content=form_content,user=request.user)
         post.save()
-        return HttpResponse({
-            "success": "post created",
-        }, status=201)
+        return render(request, "network/index.html",{
 
-    return index(request)
+        })
+            
+
+    
 
 
 def profile(request,username):
@@ -133,7 +134,7 @@ def newPost(request, user_id):
         post = Post.objects.create(content=post_content,user=user)
         post.save()
         return render(request, "network/index.html", {
-                "message": "Posted."
+                "posts": Post.objects.all().order_by('id').reverse()
             })
 
 def following(request, user_id):
@@ -157,3 +158,26 @@ def following(request, user_id):
     return render(request, 'network/following.html',{
         'posts': post_list
     })
+
+def edit(request, post_id):
+    if request.method == 'POST':
+        post = get_object_or_404(Post, id=post_id)
+        textarea = request.POST["textarea"]
+        post.content = textarea
+        post.save()
+        return HttpResponse("success: post edited")
+
+def like(request):
+    user = request.user
+    if request.method == "GET":
+        post_id = request.GET['post_id']
+        likedPost = Post.objects.get(pk=post_id)
+        if user in likedPost.liked.all():
+            likedPost.liked.remove(user)
+            like = Like.objects.get(post=likedPost, user=user)
+            like.delete()
+        else:
+            like = Like.objects.get_or_create(post=likedPost, user=user)
+            likedPost.liked.add(user)
+            likedPost.save()
+        return HttpResponse("success to liking request")

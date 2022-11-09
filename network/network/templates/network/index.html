@@ -1,28 +1,63 @@
 {% extends "network/layout.html" %}
 
-{% block body %}
-    <div id="posts">
-        {% for post in posts%}
-            <a href="{% url 'profile' username=post.user %}">{{ post.user }}</a>
-            {{ post.timestamp }}
-            {{ post.content }}
-            {% empty %}
-            no posts yet
-        {% endfor %}
-    </div>
+{% load static %}
 
-    {% if user.is_authenticated %}
-    <div id="newPost" class="row justify-content-center">
-        <div class="form-group col-6">
+{% block body %}
+{% if user.is_authenticated %}
+<div id="newPost" class="container">
+    <div class="form-group col-6 card">
+        <div class="card-body">
+            <h5 class="card-title">What are you thinking...</h5>
             <form action="{% url 'newPost' user_id=user.id %}" method="post">
                 {% csrf_token %}
                 <div class="form-group">
-                    <textarea rows="3" class="form-control col-10" name="textarea"></textarea>
-                    <input class="btn btn-primary col-2" type="submit" value="Post">    
+                    <textarea rows="3" class="form-control" name="textarea"></textarea>
+                    <input class="btn btn-primary" type="submit" value="Post">
                 </div>
-                
+            
             </form>
-        </div>
+        </div>  
     </div>
-    {% endif %}
+</div>
+{% endif %}
+
+
+    <div id="posts">
+        {% for post in posts%}
+        <div class="container">
+            <div class="card" style="width: 50%">
+                <div class="card-body">
+                    <h5 class="card-title"><a href="{% url 'profile' username=post.user %}">{{ post.user }}</a></h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ post.timestamp }}</h6>
+                    <div class="card-text post-content{{ post.id }}">{{ post.content }}</div>
+                
+            
+           
+
+            {% if user.is_authenticated %}
+                {% if request.user == post.user %}
+                <form action="{% url 'edit' post_id=post.id %}" method="post">
+                        {% csrf_token %}
+                    <textarea rows="3" class="form-control" class="text-edit" name="textarea">{{ post.content }}</textarea>
+                    <button type="submit" data-id="{{ post.id }}" class="edit-post btn btn-secondary">Edit</button>
+                </form>
+                
+                {% elif request.user in post.liked.all %}
+                <a href="#" class ='like-button'  data-value="Unlike" data-total="{{ post.liked.all.count }}" data-id="{{ post.id }}" id="{{ post.id }}"><i id="heart{{post.id}}"class="fa fa-heart" style="color:red"></i><span id="liked{{ post.id}}"> {{ post.liked.all.count }}</span></a>
+                {% else %}
+                <a href="#" class='like-button'  data-value ="Like" data-total="{{ post.liked.all.count }}" data-id="{{ post.id }}" id="{{ post.id }}"><i id="heart{{post.id}}"class="fa fa-heart" style="color:gray"></i><span id="liked{{ post.id}}"> {{ post.liked.all.count }}</span></a>
+                {% endif %}
+            {% else %}
+            Likes:{{ post.liked.all.count }}
+            {% endif %}
+            </div>
+            </div>
+            </div>
+            
+          
+        {% endfor %}
+        
+    </div>
+
+
 {% endblock %}

@@ -5,7 +5,9 @@
     <head>
         <title>{% block title %}Social Network{% endblock %}</title>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
+        <link href="{% static '/network/styles.css' %}" rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
     </head>
     <body>
 
@@ -45,5 +47,68 @@
             {% block body %}
             {% endblock %}
         </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+        integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+        crossorigin="anonymous"></script>
+        <script>
+            $('.edit-post').click( function(e) {
+                    e.preventDefault()
+                    let postId = $(this).data("id")
+                    if(postId == undefined){
+                        postId = 3
+                    }
+                    let content = $('.text-edit').val()
+
+                    $.ajax({
+                        type: "POST",
+                        url: `/posts/${postId}/edit`,
+                        data: {
+                            csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+                            post_id: postId,
+                            textarea: content
+                        },
+                        success: function (data) {
+                           
+                            let content = $('.text-edit').val()
+                            $(`.post-content${postId}`).html(content)
+                        }
+                    })
+                })
+            
+            $('.like-button').click(function(){
+                let postId;
+                let total;
+                let value;
+
+                postId = $(this).data("id")
+
+                $.ajax({
+                    type: "GET",
+                    url: "/likepost",
+                    data: {
+                        post_id: postId
+                    },
+                    success: function(data) {
+                        total = $('#'+postId).attr("data-total")
+                        //if liked
+                        if($('#'+postId).attr("data-value") == 'Like'){
+                            $('#liked'+postId).text((parseInt(total) + 1))
+                            $('#'+postId).attr("data-total", parseInt(total) + 1)
+                            $('#'+postId).attr("data-value", 'Unlike')
+                            $('#heart' + postId).css('color', 'red')
+                            
+
+                        } else {
+                            $('#liked' + postId).text((parseInt(total) - 1))
+                            $('#' + postId).attr("data-value", 'Like')
+                            $('#' + postId).attr("data-total", parseInt(total) - 1)
+                            $('#heart' + postId).css('color', 'gray')
+                            
+                        }
+                    }
+                })
+            })
+        </script>
     </body>
 </html>

@@ -3,10 +3,27 @@
 {% block body %}
 
     {% if message %}
-        {{ message }}
+        <div class="jumbotron jumbotron-fluid">
+            <div class="container">
+                <p class="lead">{{ message }}</p>
+            </div>
+        </div>
     {% endif %}
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">Following</h1>
+        </div>
+    </div>
 
     {% for post in posts%}
-        {{ post }}
+        <div class="container">
+            <div class="card" style="width:50%">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.user }}</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ post.timestamp }}</h6>
+                    <div class="card-text">{{ post.content }}</div>
+                </div>
+            </div>
+        </div>
     {% endfor %}
 {% endblock %}
