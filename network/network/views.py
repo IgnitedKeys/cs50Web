@@ -14,8 +14,14 @@ from .models import User, Profile, Post, Like
 def index(request):
     
         posts = Post.objects.all().order_by('id').reverse()
+
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/index.html",{
-            "posts": posts
+            "posts": posts,
+            'page_obj': page_obj
         })
 
 
@@ -92,11 +98,17 @@ def profile(request,username):
         posts = Post.objects.filter(user=user_data).order_by('id').reverse()
         follower = Profile.objects.filter(user=user_data)
         following = Profile.objects.filter(follower=user_data)
+
+        paginator = Paginator(posts, 10)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+
         return render(request, "network/profile.html",{
             "posts": posts,
             "user_data": user_data,
             "totalFollowers": len(follower),
-            "totalFollowing": len(following)
+            "totalFollowing": len(following),
+            "page_obj": page_obj
 
         })
     else: 
@@ -153,10 +165,16 @@ def following(request, user_id):
         for follower in followers:
             if follower.user == post.user:
                 post_list.append(post)
+                
+    paginator = Paginator(post_list, 10)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+        
     
     
     return render(request, 'network/following.html',{
-        'posts': post_list
+        'posts': post_list,
+        'page_obj': page_obj
     })
 
 def edit(request, post_id):
